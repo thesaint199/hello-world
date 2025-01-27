@@ -1,0 +1,93 @@
+{
+    "app": "npx ts-node --prefer-ts-exts bin/infrastructure.ts",
+    "watch": {
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "README.md",
+        "cdk*.json",
+        "**/*.d.ts",
+        "**/*.js",
+        "tsconfig.json",
+        "package*.json",
+        "yarn.lock",
+        "node_modules",
+        "test"
+      ]
+    },
+    "context": {
+      "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
+      "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true,
+      "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
+      "@aws-cdk/core:stackRelativeExports": true,
+      "@aws-cdk/aws-lambda:recognizeVersionProps": true,
+      "@aws-cdk/aws-cloudfront-origins:clarifyRepresentationLambda": true,
+      "vpcId": "",
+      "availabilityZones": [
+        "us-east-1a",
+        "us-east-1b"
+      ],
+      "maxAzs": 2,
+      "environment": {
+        "dev": {
+          "instanceType": "t3.micro",
+          "minCapacity": 1,
+          "maxCapacity": 2,
+          "domainName": "dev.example.com",
+          "allowedIps": ["0.0.0.0/0"]
+        },
+        "staging": {
+          "instanceType": "t3.small",
+          "minCapacity": 2,
+          "maxCapacity": 4,
+          "domainName": "staging.example.com",
+          "allowedIps": ["0.0.0.0/0"]
+        },
+        "prod": {
+          "instanceType": "t3.medium",
+          "minCapacity": 2,
+          "maxCapacity": 6,
+          "domainName": "prod.example.com",
+          "allowedIps": []
+        }
+      },
+      "tags": {
+        "Project": "HelloWorld",
+        "CostCenter": "Engineering",
+        "ManagedBy": "CDK"
+      },
+      "backup": {
+        "retention": {
+          "dev": 7,
+          "staging": 14,
+          "prod": 30
+        }
+      },
+      "monitoring": {
+        "alarmEmail": "team@example.com",
+        "thresholds": {
+          "cpuUtilization": 80,
+          "memoryUtilization": 80,
+          "errorRate": 5
+        }
+      },
+      "database": {
+        "dev": {
+          "instanceClass": "db.t3.micro",
+          "allocatedStorage": 20,
+          "multiAZ": false
+        },
+        "staging": {
+          "instanceClass": "db.t3.small",
+          "allocatedStorage": 50,
+          "multiAZ": false
+        },
+        "prod": {
+          "instanceClass": "db.t3.medium",
+          "allocatedStorage": 100,
+          "multiAZ": true
+        }
+      }
+    }
+  }
